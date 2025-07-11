@@ -2,7 +2,7 @@ import { siteContent } from "@/data/content";
 
 export const Footer = () => {
   return (
-    <footer className="py-16 px-4 border-t border-border/20">
+    <footer className="py-16 px-4 border-t border-border/20 black-bg">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div className="md:col-span-2">

@@ -47,7 +47,7 @@ export const BenefitsSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 px-4">
+    <section ref={sectionRef} className="py-24 px-4 black-bg">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
