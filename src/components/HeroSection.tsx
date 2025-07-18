@@ -59,10 +59,10 @@ export const HeroSection = () => {
       
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+        <h1 className="hero-title mb-6">
           <AnimatedText 
             text={siteContent.hero.title} 
-            className="block text-foreground"
+            className="block"
             delay={100}
           />
           <AnimatedText 
@@ -74,14 +74,13 @@ export const HeroSection = () => {
         
         <AnimatedText 
           text={siteContent.hero.subtitle} 
-          className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed block"
+          className="hero-subtitle text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed block"
           delay={700}
         />
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button 
-            size="lg" 
-            className={`cosmic-btn text-lg px-8 py-6 rounded-xl font-semibold button-animate ${showButtons ? 'animate' : ''}`}
+            className={`cosmic-btn hero-button rounded-xl font-semibold button-animate ${showButtons ? 'animate' : ''}`}
             style={{
               animationDelay: showButtons ? '0s' : '0s',
             }}
@@ -89,9 +88,8 @@ export const HeroSection = () => {
             {siteContent.hero.buttons.primary}
           </Button>
           <Button 
-            size="lg" 
             variant="outline" 
-            className={`text-lg px-8 py-6 rounded-xl font-semibold border-2 border-primary/50 bg-background/10 backdrop-blur-sm hover:bg-primary/20 button-animate ${showButtons ? 'animate' : ''}`}
+            className={`hero-button rounded-xl font-semibold border-2 border-primary/50 bg-background/10 backdrop-blur-sm hover:bg-primary/20 button-animate ${showButtons ? 'animate' : ''}`}
             style={{
               animationDelay: showButtons ? '0.2s' : '0s',
             }}

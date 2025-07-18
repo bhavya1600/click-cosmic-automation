@@ -36,7 +36,7 @@ export const PricingSection = () => {
     <section ref={sectionRef} className="py-24 px-4 black-bg">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-gradient">
             {siteContent.pricing.title}
           </h2>
         </div>
@@ -56,11 +56,11 @@ export const PricingSection = () => {
               )}
               
               <CardHeader className="text-center p-8 pb-6">
-                <h3 className="text-2xl font-bold text-foreground mb-2">
+                <h3 className="text-2xl font-semibold text-foreground mb-2">
                   {plan.name}
                 </h3>
                 <div className="mb-4">
-                  <span className="text-4xl md:text-5xl font-bold text-foreground">
+                  <span className="text-4xl md:text-5xl font-semibold text-foreground">
                     {plan.price}
                   </span>
                   <span className="text-muted-foreground text-lg">

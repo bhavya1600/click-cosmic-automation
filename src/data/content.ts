@@ -17,44 +17,45 @@ export const siteContent = {
   },
   
   services: {
-    title: "AI Solutions That Take Your Business to the Next Level",
-    subtitle: "We design, develop, and implement automation tools that help you work smarter, not harder.",
+    title: "AI Solutions That Take Your<br/>Business to the Next Level",
+    subtitle: "We design, develop, and implement automation tools that help you work<br/>smarter, not harder.",
     items: [
       {
         title: "Effortless Workflow Automation",
-        description: "Streamline your business processes with intelligent automation that handles repetitive tasks, freeing your team to focus on what matters most.",
+        description: "Let us connect the dots between your business tools—emails, CRMs, calendars, and forms—so every process just flows, without you even noticing. Automate repetitive tasks and free up your time for real business growth.",
         image: "/placeholder-workflow.jpg",
-        ctas: ["See Automations", "How it Works"]
+        ctas: ["Process Automation", "Task Management"]
       },
       {
         title: "Leads—Generated, Tracked, Nurtured",
-        description: "Transform your lead generation with AI-powered systems that identify, capture, and nurture prospects automatically.",
+        description: "Automate your lead capture, CRM updates, and follow-ups. From web forms to inbox to your sales pipeline, never lose a lead or forget a follow-up again—everything works quietly behind the click.",
         image: "/placeholder-leads.jpg",
-        ctas: ["Lead Automation", "View Results"]
+        ctas: ["Lead Generation", "CRM Integration"]
       },
       {
         title: "Appointments, Handled Seamlessly",
-        description: "Never miss a booking again with smart scheduling systems that manage calendars, send reminders, and handle rescheduling.",
+        description: "Online booking, calendar syncing, reminders, and client communication—all automated and managed invisibly by us. Clients book, you show up—it’s that simple.",
         image: "/placeholder-appointments.jpg",
-        ctas: ["Schedule Demo", "See Features"]
+        ctas: ["Calendar Sync", "Auto Reminders"]
       },
       {
         title: "Social Media, On Autopilot",
-        description: "Maintain consistent social presence with AI that creates, schedules, and optimizes content across all your platforms.",
+        description: "Automatically post, schedule, and manage your brand’s social presence across all platforms. Maintain a consistent online voice and save hours every week.",
         image: "/placeholder-social.jpg",
-        ctas: ["Social Automation", "Content Strategy"]
+        ctas: ["Content Creation", "Multi-Platform"]
       },
       {
         title: "Smart Websites & Custom Automation",
-        description: "Build intelligent websites that adapt, learn, and automate customer interactions for maximum conversion and engagement.",
+        description: "Whether you need a modern, automation-ready website or a bespoke workflow, we’ll design and build exactly what fits your business—no one-size-fits-all, just solutions made for you.",
         image: "/placeholder-websites.jpg",
-        ctas: ["Custom Solutions", "Portfolio"]
+        ctas: ["Tailored Solutions", "Web Development"]
       }
     ]
   },
   
   benefits: {
-    title: "The Key Benefits of BehindTheClick Automation",
+    title: "The Key Benefits of<br/><span class='text-gradient'>BehindTheClick</span> Automation",
+    subtitle: "Discover how AI automation enhances efficiency, reduces costs, and drives<br/>business growth with smarter, faster processes.",
     items: [
       {
         title: "Increased Productivity",

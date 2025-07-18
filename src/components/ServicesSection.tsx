@@ -1,6 +1,4 @@
 import { useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { siteContent } from "@/data/content";
 
 export const ServicesSection = () => {
@@ -34,58 +32,61 @@ export const ServicesSection = () => {
     <section ref={sectionRef} className="py-24 px-4 black-bg">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
-            {siteContent.services.title}
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            {siteContent.services.subtitle}
-          </p>
+          <span className="inline-block px-3 py-1 text-xs bg-transparent border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
+            Our Services
+          </span>
+          <h2 className="services-title mb-6" dangerouslySetInnerHTML={{ __html: siteContent.services.title }} />
+          <p className="services-subtitle text-muted-foreground max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: siteContent.services.subtitle }} />
         </div>
         
         <div className="grid gap-8 md:gap-12">
-          {siteContent.services.items.map((service, index) => (
-            <div 
-              key={index}
-              className={`grid md:grid-cols-2 gap-8 items-center fade-in-up ${
-                index % 2 === 1 ? 'md:grid-flow-dense' : ''
-              }`}
-            >
-              <div className={index % 2 === 1 ? 'md:col-start-2' : ''}>
-                <Card className="cosmic-card rounded-3xl overflow-hidden">
-                  <CardContent className="p-8">
-                    <h3 className="text-2xl md:text-3xl font-bold mb-4 text-foreground">
+          {siteContent.services.items.map((service, index) => {
+            const categoryTags = ["Workflow", "Leads", "Appointments", "Social", "Custom"];
+            
+            return (
+                            <div 
+                key={index}
+                className={`grid md:grid-cols-2 gap-8 items-center fade-in-up ${
+                  index % 2 === 0 ? 'md:grid-flow-dense' : ''
+                }`}
+              >
+                <div className={index % 2 === 0 ? 'md:col-start-2' : ''}>
+                  <div className="p-8">
+                    <span className="inline-block px-3 py-1 text-xs bg-transparent border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
+                      {categoryTags[index]}
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-foreground">
                       {service.title}
                     </h3>
-                    <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                    <p className="text-white mb-6 leading-relaxed italic opacity-90" style={{fontSize: '0.9rem'}}>
                       {service.description}
                     </p>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-2">
                       {service.ctas.map((cta, ctaIndex) => (
-                        <Button
+                        <span
                           key={ctaIndex}
-                          variant={ctaIndex === 0 ? "default" : "outline"}
-                          className={ctaIndex === 0 ? "cosmic-btn rounded-xl" : "rounded-xl border-primary/50 hover:bg-primary/20"}
+                          className="px-2 py-1 text-xs bg-transparent border border-muted-foreground/30 rounded-lg text-white opacity-100 cursor-default"
                         >
                           {cta}
-                        </Button>
+                        </span>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-              
-              <div className={index % 2 === 1 ? 'md:col-start-1 md:row-start-1' : ''}>
-                <div className="cosmic-card rounded-3xl overflow-hidden aspect-video bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-primary animate-pulse"></div>
+                  </div>
+                </div>
+                
+                <div className={index % 2 === 0 ? 'md:col-start-1 md:row-start-1' : ''}>
+                  <div className="cosmic-card rounded-3xl overflow-hidden aspect-video bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full bg-primary animate-pulse"></div>
+                      </div>
+                      <p className="text-muted-foreground">Service Preview</p>
                     </div>
-                    <p className="text-muted-foreground">Service Preview</p>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

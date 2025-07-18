@@ -6,7 +6,7 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div className="md:col-span-2">
-            <h3 className="text-2xl font-bold text-gradient mb-4">
+            <h3 className="text-2xl font-semibold text-gradient mb-4">
               {siteContent.company.name}
             </h3>
             <p className="text-muted-foreground mb-6 max-w-md">
