@@ -12,12 +12,14 @@ const AnimatedText = ({ text, className, delay = 0 }: AnimatedTextProps) => {
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
+    console.log('AnimatedText rendered:', text, 'delay:', delay);
     const timer = setTimeout(() => {
+      console.log('Animation starting for:', text);
       setAnimate(true);
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [delay, text]);
 
   return (
     <span className={className}>
@@ -26,7 +28,7 @@ const AnimatedText = ({ text, className, delay = 0 }: AnimatedTextProps) => {
           key={index}
           className={`char-animate ${animate ? 'animate' : ''}`}
           style={{
-            animationDelay: animate ? `${index * 0.05}s` : '0s',
+            animationDelay: animate ? `${index * 0.03}s` : '0s',
           }}
         >
           {char === ' ' ? '\u00A0' : char}
@@ -43,7 +45,7 @@ export const HeroSection = () => {
     // Show buttons after the text animation completes
     const timer = setTimeout(() => {
       setShowButtons(true);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -61,19 +63,19 @@ export const HeroSection = () => {
           <AnimatedText 
             text={siteContent.hero.title} 
             className="block text-foreground"
-            delay={500}
+            delay={100}
           />
           <AnimatedText 
             text={siteContent.hero.titleHighlight} 
             className="block text-gradient mt-2"
-            delay={1000}
+            delay={400}
           />
         </h1>
         
         <AnimatedText 
           text={siteContent.hero.subtitle} 
           className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed block"
-          delay={1500}
+          delay={700}
         />
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
