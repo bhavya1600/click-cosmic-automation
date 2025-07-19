@@ -32,7 +32,7 @@ export const ServicesSection = () => {
     <section ref={sectionRef} className="py-24 px-4 black-bg">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
-          <span className="inline-block px-3 py-1 text-xs bg-transparent border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
+          <span className="inline-block px-3 py-1 text-xs tag-style border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
             Our Services
           </span>
           <h2 className="services-title mb-6" dangerouslySetInnerHTML={{ __html: siteContent.services.title }} />
@@ -52,7 +52,7 @@ export const ServicesSection = () => {
               >
                 <div className={index % 2 === 0 ? 'md:col-start-2' : ''}>
                   <div className="p-8">
-                    <span className="inline-block px-3 py-1 text-xs bg-transparent border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
+                    <span className="inline-block px-3 py-1 text-xs tag-style border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
                       {categoryTags[index]}
                     </span>
                     <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-foreground">
@@ -65,7 +65,7 @@ export const ServicesSection = () => {
                       {service.ctas.map((cta, ctaIndex) => (
                         <span
                           key={ctaIndex}
-                          className="px-2 py-1 text-xs bg-transparent border border-muted-foreground/30 rounded-lg text-white opacity-100 cursor-default"
+                          className="px-2 py-1 text-xs tag-style border border-muted-foreground/30 rounded-lg text-white opacity-100 cursor-default"
                         >
                           {cta}
                         </span>

@@ -2,14 +2,14 @@ import { siteContent } from "@/data/content";
 
 export const Footer = () => {
   return (
-    <footer className="py-16 px-4 border-t border-border/20 black-bg">
-      <div className="max-w-7xl mx-auto">
+    <footer className="py-16 px-4 border-t border-border/20 black-bg footer-gradient">
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div className="md:col-span-2">
-            <h3 className="text-2xl font-semibold text-gradient mb-4">
+            <h3 className="text-2xl font-bold text-white mb-4">
               {siteContent.company.name}
             </h3>
-            <p className="text-muted-foreground mb-6 max-w-md">
+            <p className="text-muted-foreground mb-6 max-w-md opacity-100">
               {siteContent.company.description}
             </p>
           </div>

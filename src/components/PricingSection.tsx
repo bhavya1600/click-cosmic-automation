@@ -1,7 +1,5 @@
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { siteContent } from "@/data/content";
 
@@ -36,65 +34,82 @@ export const PricingSection = () => {
     <section ref={sectionRef} className="py-24 px-4 black-bg">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
-          <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-gradient">
-            {siteContent.pricing.title}
-          </h2>
+          <span className="inline-block px-3 py-1 text-xs tag-style border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
+            Pricing
+          </span>
+          <h2 className="services-title mb-6" dangerouslySetInnerHTML={{ __html: siteContent.pricing.title }} />
+          <p className="services-subtitle text-muted-foreground max-w-3xl mx-auto opacity-100">
+            {siteContent.pricing.subtitle}
+          </p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {siteContent.pricing.plans.map((plan, index) => (
-            <Card 
-              key={index} 
-              className={`cosmic-card rounded-3xl fade-in-up relative ${
-                plan.popular ? 'ring-2 ring-primary scale-105 md:scale-110' : ''
-              }`}
-            >
-              {plan.popular && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 cosmic-btn px-4 py-1 text-sm font-semibold">
-                  Most Popular
-                </Badge>
-              )}
-              
-              <CardHeader className="text-center p-8 pb-6">
-                <h3 className="text-2xl font-semibold text-foreground mb-2">
-                  {plan.name}
-                </h3>
-                <div className="mb-4">
-                  <span className="text-4xl md:text-5xl font-semibold text-foreground">
-                    {plan.price}
-                  </span>
-                  <span className="text-muted-foreground text-lg">
-                    {plan.period}
-                  </span>
+          {siteContent.pricing.plans.map((plan, index) => {
+            const getGradientClass = () => {
+              if (index === 0 || index === 2) return 'pricing-card-bottom';
+              if (index === 1) return 'pricing-card-top';
+              return '';
+            };
+
+            const getEmoji = () => {
+              if (index === 0) return '🚀';
+              if (index === 1) return '⚡';
+              if (index === 2) return '👑';
+              return '';
+            };
+
+            return (
+              <div 
+                key={index} 
+                className={`pricing-card ${getGradientClass()} pricing-card-content border border-muted-foreground/30 rounded-lg p-6 fade-in-up relative`}
+              >
+                <div className="text-left mb-5">
+                  <div className="flex items-center mb-3">
+                    <h3 className="pricing-card-title font-semibold text-foreground flex items-center">
+                      <span className="mr-2">{getEmoji()}</span>
+                      {plan.name}
+                    </h3>
+                    {plan.popular && (
+                      <span className="ml-3 px-2 py-1 text-xs tag-style border border-muted-foreground/30 rounded-lg text-white opacity-100">
+                        Popular
+                      </span>
+                    )}
+                  </div>
+                  <div className="mb-3">
+                    <span className="pricing-card-price font-semibold text-foreground">
+                      {plan.price}
+                    </span>
+                    <span className="pricing-card-period text-muted-foreground ml-1">
+                      {plan.period}
+                    </span>
+                  </div>
+                  <p className="text-muted-foreground opacity-100 mb-4">
+                    {plan.description}
+                  </p>
+                  
+                  <Button 
+                    className={`w-full py-4 font-semibold rounded-xl mb-4 ${
+                      plan.popular 
+                        ? 'cosmic-btn' 
+                        : 'border-2 border-primary/50 bg-background/10 hover:bg-primary/20'
+                    }`}
+                    variant={plan.popular ? "default" : "outline"}
+                  >
+                    {plan.cta}
+                  </Button>
                 </div>
-                <p className="text-muted-foreground">
-                  {plan.description}
-                </p>
-              </CardHeader>
-              
-              <CardContent className="px-8 pb-8">
-                <ul className="space-y-4 mb-8">
+                
+                <ul className="space-y-2">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
-                      <Check className="w-5 h-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
-                      <span className="text-muted-foreground">{feature}</span>
+                      <Check className="w-4 h-4 text-white mt-0.5 mr-2 flex-shrink-0" />
+                      <span className="text-white opacity-100 font-medium">{feature}</span>
                     </li>
                   ))}
                 </ul>
-                
-                <Button 
-                  className={`w-full py-6 text-lg font-semibold rounded-xl ${
-                    plan.popular 
-                      ? 'cosmic-btn' 
-                      : 'border-2 border-primary/50 bg-background/10 hover:bg-primary/20'
-                  }`}
-                  variant={plan.popular ? "default" : "outline"}
-                >
-                  {plan.cta}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

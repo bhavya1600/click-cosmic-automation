@@ -284,6 +284,129 @@
      border-radius: 50%;
      pointer-events: none;
    }
+   
+   /* Pricing cards with gradients */
+   .pricing-card {
+     position: relative;
+     overflow: hidden;
+   }
+   
+   .pricing-card-bottom::after {
+     content: '';
+     position: absolute;
+     bottom: -50px;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 300px;
+     height: 120px;
+     background: radial-gradient(ellipse at center, hsl(271 81% 56% / 0.3) 0%, hsl(271 81% 56% / 0.1) 40%, transparent 70%);
+     border-radius: 50%;
+     pointer-events: none;
+   }
+   
+   .pricing-card-top::before {
+     content: '';
+     position: absolute;
+     top: -50px;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 300px;
+     height: 120px;
+     background: radial-gradient(ellipse at center, hsl(271 81% 56% / 0.3) 0%, hsl(271 81% 56% / 0.1) 40%, transparent 70%);
+     border-radius: 50%;
+     pointer-events: none;
+   }
+   
+   /* Pricing card text sizing */
+   .pricing-card-content {
+     font-size: 0.85rem;
+   }
+   
+   .pricing-card-title {
+     font-size: 1.4rem;
+   }
+   
+   .pricing-card-price {
+     font-size: 2rem;
+   }
+   
+   .pricing-card-period {
+     font-size: 0.9rem;
+   }
+   
+   /* Tag styling with dark background */
+   .tag-style {
+     background-color: rgba(13, 13, 13, 0.8);
+   }
+   
+   /* FAQ item styling */
+   .faq-item {
+     background: rgba(24, 24, 27, 0.8);
+     transition: all 0.2s ease;
+   }
+   
+   .faq-item:hover {
+     background: rgba(24, 24, 27, 1);
+   }
+   
+   /* FAQ CTA section with corner gradients */
+   .faq-cta-gradient {
+     position: relative;
+     background-color: rgba(13, 13, 13, 0.8);
+     border: 1px solid hsl(var(--border) / 0.2);
+     overflow: hidden;
+   }
+   
+   .faq-cta-gradient::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 500px;
+     height: 500px;
+     background: radial-gradient(circle, hsl(271 81% 56% / 0.6) 0%, hsl(271 81% 56% / 0.3) 30%, hsl(271 81% 56% / 0.1) 60%, transparent 80%);
+     transform: translate(-50%, -50%);
+     pointer-events: none;
+   }
+   
+   .faq-cta-gradient::after {
+     content: '';
+     position: absolute;
+     bottom: 0;
+     right: 0;
+     width: 500px;
+     height: 500px;
+     background: radial-gradient(circle, hsl(271 81% 56% / 0.6) 0%, hsl(271 81% 56% / 0.3) 30%, hsl(271 81% 56% / 0.1) 60%, transparent 80%);
+     transform: translate(50%, 50%);
+     pointer-events: none;
+   }
+   
+   /* CTA button styling */
+   .cta-button {
+     padding: 16px 32px;
+     border-radius: 12px;
+     font-size: 16px;
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+   }
+   
+   /* Footer gradient styling */
+   .footer-gradient {
+     position: relative;
+     overflow: hidden;
+   }
+   
+   .footer-gradient::before {
+     content: '';
+     position: absolute;
+     top: -60%;
+     left: 2.5%;
+     width: 97%;
+     height: 90%;
+     background: radial-gradient(ellipse, hsl(271 81% 56% / 0.25) 0%, hsl(271 81% 56% / 0.12) 30%, hsl(271 81% 56% / 0.06) 50%, hsl(271 81% 56% / 0.02) 70%, transparent 85%);
+     pointer-events: none;
+   }
 
   /* Character by character animation */
   .char-animate {

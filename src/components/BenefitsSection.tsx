@@ -49,11 +49,11 @@ export const BenefitsSection = () => {
     <section ref={sectionRef} className="py-24 px-4 black-bg">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
-          <span className="inline-block px-3 py-1 text-xs bg-transparent border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
+          <span className="inline-block px-3 py-1 text-xs tag-style border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
             Benefits
           </span>
           <h2 className="services-title mb-6" dangerouslySetInnerHTML={{ __html: siteContent.benefits.title }} />
-          <p className="services-subtitle text-muted-foreground max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: siteContent.benefits.subtitle }} />
+          <p className="services-subtitle text-muted-foreground max-w-3xl mx-auto opacity-100" dangerouslySetInnerHTML={{ __html: siteContent.benefits.subtitle }} />
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -69,9 +69,9 @@ export const BenefitsSection = () => {
                   <h3 className="text-xl font-semibold mb-3 text-foreground">
                     {benefit.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed opacity-90" style={{fontSize: 'calc(1rem - 1px)'}}>
-                    {benefit.description}
-                  </p>
+                                     <p className="text-muted-foreground leading-relaxed opacity-100" style={{fontSize: 'calc(1rem - 1px)'}}>
+                      {benefit.description}
+                    </p>
                 </div>
               </div>
             );

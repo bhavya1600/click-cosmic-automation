@@ -3,7 +3,7 @@ export const siteContent = {
     name: "BehindTheClick",
     tagline: "The Magic Happens",
     taglineHighlight: "Behind The Click",
-    description: "We bring AI automation to your fingertips and streamline tasks"
+    description: "Automate Smarter, Optimize Faster, and Grow Stronger."
   },
   
   hero: {
@@ -91,7 +91,8 @@ export const siteContent = {
   },
   
   pricing: {
-    title: "The Best AI Automation, at the Right Price",
+    title: "The Best AI Automation,<br/>at the Right Price",
+    subtitle: "Choose a plan that fits your business needs and start automating with AI",
     plans: [
       {
         name: "Starter",
@@ -145,6 +146,38 @@ export const siteContent = {
     ]
   },
   
+  faqs: {
+    title: "We've Got the Answers<br/>You're Looking For",
+    subtitle: "Quick answers to your AI automation questions.",
+    items: [
+      {
+        question: "How can AI automation help my business?",
+        answer: "AI automation eliminates repetitive tasks, improves efficiency, and reduces errors. It allows your team to focus on high-value work while increasing productivity and lowering operational costs."
+      },
+      {
+        question: "Is AI automation difficult to integrate?",
+        answer: "Not at all! We handle the entire integration process for you. Our team works with your existing systems and tools to create seamless automation workflows that require minimal disruption to your current operations."
+      },
+      {
+        question: "What industries can benefit from AI automation?",
+        answer: "Virtually any industry can benefit from AI automation. We work with businesses in healthcare, finance, e-commerce, real estate, marketing, legal services, and more. The key is identifying repetitive processes that can be streamlined."
+      },
+      {
+        question: "Do I need technical knowledge to use AI automation?",
+        answer: "Absolutely not! We design our automation solutions to be user-friendly and require no technical expertise. We provide training and ongoing support to ensure you and your team can easily manage and benefit from the automated processes."
+      },
+      {
+        question: "What kind of support do you offer?",
+        answer: "We provide comprehensive support including initial setup, training, ongoing maintenance, and 24/7 technical assistance. Our team ensures your automation runs smoothly and evolves with your business needs."
+      }
+    ],
+    cta: {
+      title: "Let AI do the Work so<br/>you can Scale Faster",
+      subtitle: "Book a Call Today and Start Automating",
+      button: "Book a free call"
+    }
+  },
+
   footer: {
     links: {
       company: [
