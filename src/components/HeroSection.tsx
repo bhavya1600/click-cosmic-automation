@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { siteContent } from "@/data/content";
 import { useEffect, useState } from "react";
+import { AnimatedBackground } from "@/components/AnimatedBackground";
 
 interface AnimatedTextProps {
   text: string;
@@ -51,11 +52,9 @@ export const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center cosmic-bg overflow-hidden">
-      {/* Cosmic Animation */}
-      <div className="plasma-container">
-        <div className="plasma"></div>
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Animated Background */}
+      <AnimatedBackground />
       
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
@@ -80,16 +79,31 @@ export const HeroSection = () => {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button 
-            className={`cosmic-btn hero-button rounded-xl font-semibold button-animate ${showButtons ? 'animate' : ''}`}
+            className={`cosmic-btn rounded-md font-semibold py-3 px-5 button-animate ${showButtons ? 'animate' : ''}`}
             style={{
               animationDelay: showButtons ? '0s' : '0s',
             }}
           >
             {siteContent.hero.buttons.primary}
+            <svg 
+              width="16" 
+              height="16" 
+              viewBox="0 0 16 16" 
+              fill="none" 
+              className="ml-2"
+            >
+              <path 
+                d="M4 12L12 4M12 4H6M12 4V10" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              />
+            </svg>
           </Button>
           <Button 
             variant="outline" 
-            className={`hero-button rounded-xl font-semibold border-2 border-primary/50 bg-background/10 backdrop-blur-sm hover:bg-primary/20 button-animate ${showButtons ? 'animate' : ''}`}
+            className={`rounded-md font-semibold py-3 px-5 border-2 border-primary/50 bg-background/10 backdrop-blur-sm hover:bg-primary/20 button-animate ${showButtons ? 'animate' : ''}`}
             style={{
               animationDelay: showButtons ? '0.2s' : '0s',
             }}
