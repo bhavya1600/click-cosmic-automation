@@ -9,9 +9,9 @@ export const Footer = () => {
             <div className="flex items-center gap-3 mb-4">
               {/* Logo */}
               <img 
-                src="/logo.png" 
+                src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="BehindTheClick Logo"
-                className="w-8 h-8"
+                className="w-8 h-8 object-contain"
               />
               <h3 className="text-2xl font-bold text-white">
                 {siteContent.company.name}
