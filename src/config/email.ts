@@ -8,7 +8,7 @@ export const emailConfig = {
   templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID , 
   publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY ,
 };
-
+  
 // Example template for EmailJS:
 /*
 Subject: New Contact Form Message from {{from_name}}
