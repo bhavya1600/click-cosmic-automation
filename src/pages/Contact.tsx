@@ -7,6 +7,8 @@ import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { Mail, Phone, MapPin, Clock, MessageCircle, Calendar, Instagram } from "lucide-react";
 import { useState } from "react";
 import { siteContent } from "@/data/content";
+import emailjs from '@emailjs/browser';
+import { emailConfig } from "@/config/email";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,10 +18,38 @@ const Contact = () => {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
+    setIsLoading(true);
+    setSubmitStatus('idle');
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        company: formData.company || 'Not specified',
+        message: formData.message,
+        to_email: 'bhavyac@behindtheclick.io'
+      };
+
+      await emailjs.send(
+        emailConfig.serviceId,
+        emailConfig.templateId,
+        templateParams,
+        emailConfig.publicKey
+      );
+      
+      setSubmitStatus('success');
+      setFormData({ name: "", email: "", company: "", message: "" });
+    } catch (error) {
+      console.error('Email send failed:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const contactMethods = [
@@ -189,24 +219,47 @@ const Contact = () => {
                   />
                 </div>
                 
-                <Button type="submit" className="cosmic-btn rounded-md font-semibold py-3 px-6 w-full">
-                  Send Message
-                  <svg 
-                    width="16" 
-                    height="16" 
-                    viewBox="0 0 16 16" 
-                    fill="none" 
-                    className="ml-2"
-                  >
-                    <path 
-                      d="M4 12L12 4M12 4H6M12 4V10" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Button>
+                                 <Button 
+                   type="submit" 
+                   className="cosmic-btn rounded-md font-semibold py-3 px-6 w-full" 
+                   disabled={isLoading}
+                 >
+                   {isLoading ? 'Sending...' : 'Send Message'}
+                   {!isLoading && (
+                     <svg 
+                       width="16" 
+                       height="16" 
+                       viewBox="0 0 16 16" 
+                       fill="none" 
+                       className="ml-2"
+                     >
+                       <path 
+                         d="M4 12L12 4M12 4H6M12 4V10" 
+                         stroke="currentColor" 
+                         strokeWidth="2" 
+                         strokeLinecap="round" 
+                         strokeLinejoin="round"
+                       />
+                     </svg>
+                   )}
+                 </Button>
+                 
+                 {/* Status Messages */}
+                 {submitStatus === 'success' && (
+                   <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+                     <p className="text-green-400 text-sm">
+                       ✅ Message sent successfully! We'll get back to you within 24 hours.
+                     </p>
+                   </div>
+                 )}
+                 
+                 {submitStatus === 'error' && (
+                   <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+                     <p className="text-red-400 text-sm">
+                       ❌ Failed to send message. Please try again or contact us directly at bhavyac@behindtheclick.io
+                     </p>
+                   </div>
+                 )}
               </form>
             </div>
 
