@@ -32,24 +32,27 @@ const Contact = () => {
         console.log('EmailJS Config Check:', {
           serviceId: emailConfig.serviceId,
           templateId: emailConfig.templateId,
-          publicKey: emailConfig.publicKey ? 'SET' : 'MISSING'
+          publicKey: 'FEPDnTxj6luh0oozA'
+          // emailConfig.publicKey ? 'SET' : 'MISSING'
         });
       }
 
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        company: formData.company || 'Not specified',
-        message: formData.message,
-        to_email: 'bhavyac@behindtheclick.io'
-      };
+                    // Template params matching your EmailJS template variables
+        const templateParams = {
+          name: formData.name,
+          title: formData.message, // Using message as title since that's what your template expects
+          email: formData.email,
+          company: formData.company || 'Not specified'
+        };
 
-      await emailjs.send(
-        emailConfig.serviceId,
-        emailConfig.templateId,
-        templateParams,
-        emailConfig.publicKey
-      );
+       console.log('Sending with template params:', templateParams);
+
+       await emailjs.send(
+         emailConfig.serviceId,
+         emailConfig.templateId,
+         templateParams,
+         emailConfig.publicKey
+       );
       
       setSubmitStatus('success');
       setFormData({ name: "", email: "", company: "", message: "" });
