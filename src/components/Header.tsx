@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { siteContent } from "@/data/content";
 import { Menu, X } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,18 +31,18 @@ export const Header = () => {
               className="w-8 h-8"
             />
             {/* Company Name */}
-            <a href="/" className="text-xl font-bold text-white hover:text-primary transition-colors">
+            <Link to="/" className="text-xl font-bold text-white hover:text-primary transition-colors">
               {siteContent.company.name}
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation & CTA Button */}
           <div className="hidden md:flex items-center gap-8">
             <nav className="flex items-center gap-8">
               {navigation.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className={`text-sm font-medium transition-colors duration-200 relative group ${
                     isActive(item.href)
                       ? "text-primary"
@@ -56,7 +56,7 @@ export const Header = () => {
                       ? "w-full" 
                       : "w-0 group-hover:w-full"
                   }`}></span>
-                </a>
+                </Link>
               ))}
             </nav>
                          <Button 
@@ -100,9 +100,9 @@ export const Header = () => {
           <div className="md:hidden border-t border-border/20 py-4">
             <nav className="flex flex-col gap-4">
               {navigation.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className={`text-sm font-medium transition-colors duration-200 relative group ${
                     isActive(item.href)
                       ? "text-primary"
@@ -117,7 +117,7 @@ export const Header = () => {
                       ? "w-full" 
                       : "w-0 group-hover:w-full"
                   }`}></span>
-                </a>
+                </Link>
               ))}
               <div className="pt-2">
                 <Button 
