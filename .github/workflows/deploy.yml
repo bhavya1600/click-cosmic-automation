@@ -39,6 +39,28 @@ jobs:
         echo "VITE_EMAILJS_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_TEMPLATE_ID != '' && 'SET' || 'NOT SET' }}"
         echo "VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY != '' && 'SET' || 'NOT SET' }}"
         
+    - name: Debug Build Environment
+      run: |
+        echo "Environment variables available during build:"
+        echo "VITE_EMAILJS_SERVICE_ID is: ${VITE_EMAILJS_SERVICE_ID:-NOT_SET}"
+        echo "VITE_EMAILJS_TEMPLATE_ID is: ${VITE_EMAILJS_TEMPLATE_ID:-NOT_SET}"
+        echo "VITE_EMAILJS_PUBLIC_KEY is: ${VITE_EMAILJS_PUBLIC_KEY:-NOT_SET}"
+      env:
+        VITE_EMAILJS_SERVICE_ID: ${{ secrets.VITE_EMAILJS_SERVICE_ID }}
+        VITE_EMAILJS_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}
+        VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
+
+    - name: Create Environment File
+      run: |
+        echo "Creating .env file for Vite..."
+        echo "VITE_EMAILJS_SERVICE_ID=${{ secrets.VITE_EMAILJS_SERVICE_ID }}" > .env
+        echo "VITE_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}" >> .env
+        echo "VITE_EMAILJS_PUBLIC_KEY=${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}" >> .env
+        echo "Created .env file with:"
+        echo "VITE_EMAILJS_SERVICE_ID=***"
+        echo "VITE_EMAILJS_TEMPLATE_ID=***"
+        echo "VITE_EMAILJS_PUBLIC_KEY=***"
+        
     - name: Build
       run: npm run build
       env:
