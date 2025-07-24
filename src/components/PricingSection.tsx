@@ -94,6 +94,7 @@ export const PricingSection = () => {
                         : 'border-2 border-primary/50 bg-background/10 hover:bg-primary/20'
                     }`}
                     variant={plan.popular ? "default" : "outline"}
+                    onClick={() => window.open(siteContent.company.calendlyUrl, '_blank')}
                   >
                     {plan.cta}
                   </Button>

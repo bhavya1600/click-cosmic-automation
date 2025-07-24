@@ -1,8 +1,31 @@
 import { useEffect, useRef } from "react";
 import { siteContent } from "@/data/content";
+import ServicePreviewCard from "./ServicePreviewCard";
+import LeadsPreviewCard from "./LeadsPreviewCard";
+import AppointmentsPreviewCard from "./AppointmentsPreviewCard";
+import SocialMediaPreviewCard from "./SocialMediaPreviewCard";
+import CustomAutomationPreviewCard from "./CustomAutomationPreviewCard";
 
 export const ServicesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Function to render appropriate preview component for each service
+  const renderPreviewCard = (index: number) => {
+    switch (index) {
+      case 0:
+        return <ServicePreviewCard />;
+      case 1:
+        return <LeadsPreviewCard />;
+      case 2:
+        return <AppointmentsPreviewCard />;
+      case 3:
+        return <SocialMediaPreviewCard />;
+      case 4:
+        return <CustomAutomationPreviewCard />;
+      default:
+        return <ServicePreviewCard />;
+    }
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -29,7 +52,7 @@ export const ServicesSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 px-4 black-bg">
+    <section id="services-section" ref={sectionRef} className="py-24 px-4 black-bg">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 fade-in-up">
           <span className="inline-block px-3 py-1 text-xs tag-style border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
@@ -75,13 +98,8 @@ export const ServicesSection = () => {
                 </div>
                 
                 <div className={index % 2 === 0 ? 'md:col-start-1 md:row-start-1' : ''}>
-                  <div className="cosmic-card rounded-3xl overflow-hidden aspect-video bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
-                        <div className="w-12 h-12 rounded-full bg-primary animate-pulse"></div>
-                      </div>
-                      <p className="text-muted-foreground">Service Preview</p>
-                    </div>
+                  <div className="cosmic-card rounded-3xl overflow-hidden aspect-video bg-gradient-to-br from-neutral-900/40 to-black/60 flex items-center justify-center p-6 max-w-md mx-auto">
+                    {renderPreviewCard(index)}
                   </div>
                 </div>
               </div>

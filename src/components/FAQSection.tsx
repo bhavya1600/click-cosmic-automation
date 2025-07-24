@@ -71,7 +71,10 @@ export const FAQSection = () => {
             <p className="services-subtitle text-muted-foreground mb-8 opacity-100">
               {siteContent.faqs.cta.subtitle}
             </p>
-            <Button className="cosmic-btn cta-button font-semibold">
+            <Button 
+              className="cosmic-btn cta-button font-semibold"
+              onClick={() => window.open(siteContent.company.calendlyUrl, '_blank')}
+            >
               {siteContent.faqs.cta.button}
               <svg 
                 width="16" 

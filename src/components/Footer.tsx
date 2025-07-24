@@ -6,9 +6,17 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div className="md:col-span-2">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              {siteContent.company.name}
-            </h3>
+            <div className="flex items-center gap-3 mb-4">
+              {/* Logo */}
+              <img 
+                src="/logo.png" 
+                alt="BehindTheClick Logo"
+                className="w-8 h-8"
+              />
+              <h3 className="text-2xl font-bold text-white">
+                {siteContent.company.name}
+              </h3>
+            </div>
             <p className="text-muted-foreground mb-6 max-w-md opacity-100">
               {siteContent.company.description}
             </p>

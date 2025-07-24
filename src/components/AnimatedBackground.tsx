@@ -8,12 +8,14 @@ interface Particle {
   size: number;
   opacity: number;
   life: number;
+  fadeInProgress: number; // For fade-in animation
 }
 
 export const AnimatedBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const animationRef = useRef<number>();
+  const lastSpawnTimeRef = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -37,58 +39,78 @@ export const AnimatedBackground: React.FC = () => {
       const particleCount = Math.min(80, Math.floor((canvas.width * canvas.height) / 8000));
       
       for (let i = 0; i < particleCount; i++) {
-        createParticle();
+        createParticle(true); // Pass true for initial particles
       }
     };
 
-    const createParticle = () => {
+    const createParticle = (isInitial = false) => {
       const edge = Math.floor(Math.random() * 4);
-      let x, y;
+      let startX, startY;
 
-      // Spawn from edges
+      // Define starting positions at edges
       switch (edge) {
         case 0: // top
-          x = Math.random() * canvas.width;
-          y = -10;
+          startX = Math.random() * canvas.width;
+          startY = -10;
           break;
         case 1: // right
-          x = canvas.width + 10;
-          y = Math.random() * canvas.height;
+          startX = canvas.width + 10;
+          startY = Math.random() * canvas.height;
           break;
         case 2: // bottom
-          x = Math.random() * canvas.width;
-          y = canvas.height + 10;
+          startX = Math.random() * canvas.width;
+          startY = canvas.height + 10;
           break;
         default: // left
-          x = -10;
-          y = Math.random() * canvas.height;
+          startX = -10;
+          startY = Math.random() * canvas.height;
       }
 
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const dx = centerX - x;
-      const dy = centerY - y;
+      
+      // Calculate path from edge to center
+      const dx = centerX - startX;
+      const dy = centerY - startY;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      const speed = 0.1 + Math.random() * 0.2; // Much slower
+      const speed = 0.15 + Math.random() * 0.25; // Increased speed slightly
+      
+      let x, y;
+      if (isInitial) {
+        // For initial particles, start them partway through their journey
+        const progress = 0.3 + Math.random() * 0.4; // Random between 30% and 70% complete
+        x = startX + dx * progress;
+        y = startY + dy * progress;
+      } else {
+        // For new particles, start at the edge
+        x = startX;
+        y = startY;
+      }
 
       particlesRef.current.push({
         x,
         y,
         vx: (dx / distance) * speed,
         vy: (dy / distance) * speed,
-        size: 0.5 + Math.random() * 1, // Much smaller
+        size: 0.5 + Math.random() * 1,
         opacity: 0.6 + Math.random() * 0.4,
         life: 1.0,
+        fadeInProgress: isInitial ? 0 : 1, // Initial particles fade in, new ones are visible
       });
     };
 
-    const updateParticles = () => {
+    const updateParticles = (currentTime: number) => {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
 
       particlesRef.current = particlesRef.current.filter((particle) => {
         particle.x += particle.vx;
         particle.y += particle.vy;
+
+        // Update fade-in progress only if not fully faded in
+        if (particle.fadeInProgress < 1) {
+          particle.fadeInProgress = Math.min(1, particle.fadeInProgress + 0.02); // Fade in over ~50 frames
+        }
 
         // Calculate distance to center
         const distanceToCenter = Math.sqrt(
@@ -102,19 +124,24 @@ export const AnimatedBackground: React.FC = () => {
         return particle.life > 0.05;
       });
 
-      // Maintain particle count
-      while (particlesRef.current.length < Math.min(30, Math.floor((canvas.width * canvas.height) / 20000))) {
-        createParticle();
+      // Continuously spawn new particles from borders based on time
+      const spawnInterval = 100; // Spawn new particle every 100ms for smoother flow
+      if (currentTime - lastSpawnTimeRef.current > spawnInterval) {
+        createParticle(false); // Always spawn from borders (not initial)
+        lastSpawnTimeRef.current = currentTime;
       }
     };
 
     const drawParticles = () => {
       particlesRef.current.forEach((particle) => {
         ctx.save();
-        ctx.globalAlpha = particle.opacity * particle.life;
+        
+        // Apply fade-in effect combined with other opacity factors
+        const finalOpacity = particle.opacity * particle.life * particle.fadeInProgress;
+        ctx.globalAlpha = finalOpacity;
         
         // Simple white dot particles
-        ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity * particle.life})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${finalOpacity})`;
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
@@ -123,15 +150,16 @@ export const AnimatedBackground: React.FC = () => {
       });
     };
 
-    const animate = () => {
+    const animate = (currentTime: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      updateParticles();
+      updateParticles(currentTime);
       drawParticles();
       animationRef.current = requestAnimationFrame(animate);
     };
 
     initParticles();
-    animate();
+    lastSpawnTimeRef.current = performance.now();
+    animate(performance.now());
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);

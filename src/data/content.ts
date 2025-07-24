@@ -3,7 +3,8 @@ export const siteContent = {
     name: "BehindTheClick",
     tagline: "The Magic Happens",
     taglineHighlight: "Behind The Click",
-    description: "Automate Smarter, Optimize Faster, and Grow Stronger."
+    description: "Automate Smarter, Optimize Faster, and Grow Stronger.",
+    calendlyUrl: "https://calendly.com/bhavyac-behindtheclick/30min"
   },
   
   hero: {
@@ -106,7 +107,7 @@ export const siteContent = {
           "Basic analytics",
           "Email support"
         ],
-        cta: "Choose Starter",
+        cta: "Schedule a Call",
         popular: false
       },
       {
@@ -123,7 +124,7 @@ export const siteContent = {
           "Priority support",
           "Monthly strategy calls"
         ],
-        cta: "Choose Professional",
+        cta: "Schedule a Call",
         popular: true
       },
       {
@@ -173,8 +174,8 @@ export const siteContent = {
     ],
     cta: {
       title: "Let AI do the Work so<br/>you can Scale Faster",
-      subtitle: "Book a Call Today and Start Automating",
-      button: "Book a free call"
+      subtitle: "Schedule a Call Today and Start Automating",
+      button: "Schedule a Call"
     }
   },
 
@@ -186,9 +187,7 @@ export const siteContent = {
         { label: "Contact", href: "/contact" }
       ],
       social: [
-        { label: "Twitter", href: "#" },
-        { label: "LinkedIn", href: "#" },
-        { label: "Facebook", href: "#" }
+        { label: "Instagram", href: "https://instagram.com/behindtheclick_io" }
       ]
     },
     copyright: `© ${new Date().getFullYear()} BehindTheClick. All rights reserved.`
