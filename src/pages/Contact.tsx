@@ -27,6 +27,15 @@ const Contact = () => {
     setSubmitStatus('idle');
 
     try {
+      // Debug: Log config (only in development)
+      if (import.meta.env.DEV) {
+        console.log('EmailJS Config Check:', {
+          serviceId: emailConfig.serviceId,
+          templateId: emailConfig.templateId,
+          publicKey: emailConfig.publicKey ? 'SET' : 'MISSING'
+        });
+      }
+
       const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
@@ -46,6 +55,12 @@ const Contact = () => {
       setFormData({ name: "", email: "", company: "", message: "" });
     } catch (error) {
       console.error('Email send failed:', error);
+      console.error('EmailJS Error Details:', {
+        serviceId: emailConfig.serviceId,
+        templateId: emailConfig.templateId,
+        publicKey: emailConfig.publicKey ? 'Present' : 'Missing',
+        error: error
+      });
       setSubmitStatus('error');
     } finally {
       setIsLoading(false);
