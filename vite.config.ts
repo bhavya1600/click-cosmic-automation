@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => ({
   // Set base path for GitHub Pages deployment
   // This will be set to the repository name if deploying to a project page
   // For custom domain or user page, keep it as '/'
-  base: process.env.NODE_ENV === 'production' ? './' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/click-cosmic-automation/' : '/',
   
   server: {
     host: "::",
