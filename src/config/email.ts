@@ -4,9 +4,9 @@
 // For production (GitHub Pages), these are loaded from GitHub Secrets
 
 export const emailConfig = {
-  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'behindtheclick_website',
-  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_1lcuu9p', 
-  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'FEPDnTxj6luh0oozA',
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID ,
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID , 
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY ,
 };
 
 // Example template for EmailJS:
