@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  
+    
   // Optimize for production build
   build: {
     outDir: 'dist',
