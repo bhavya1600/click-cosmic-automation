@@ -92,13 +92,13 @@ const Contact = () => {
       value: "30-min free consultation",
       action: siteContent.company.calendlyUrl
     },
-    {
-      icon: <Instagram className="w-6 h-6 text-white" />,
-      title: "Follow Us",
-      description: "Latest updates and behind the scenes",
-      value: "@behindtheclick_io",
-      action: "https://instagram.com/behindtheclick_io"
-    }
+    // {
+    //   icon: <Instagram className="w-6 h-6 text-white" />,
+    //   title: "Follow Us",
+    //   description: "Latest updates and behind the scenes",
+    //   value: "@behindtheclick_io",
+    //   action: "https://instagram.com/behindtheclick_io"
+    // }
   ];
 
   return (
