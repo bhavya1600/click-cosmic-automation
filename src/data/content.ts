@@ -4,7 +4,7 @@ export const siteContent = {
     tagline: "The Magic Happens",
     taglineHighlight: "Behind The Click",
     description: "Automate Smarter, Optimize Faster, and Grow Stronger.",
-    calendlyUrl: "https://calendly.com/bhavyac-behindtheclick/30min"
+    calendlyUrl: "https://cal.com/behindtheclick/30min"
   },
   
   hero: {

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
+import { CalEmbed } from "@/components/CalEmbed";
 import { Mail, Phone, MapPin, Clock, MessageCircle, Calendar, Instagram } from "lucide-react";
 import { useState } from "react";
 import { siteContent } from "@/data/content";
@@ -116,6 +117,27 @@ const Contact = () => {
             Ready to automate your business? Let's discuss how we can help you 
             streamline your operations and boost productivity.
           </p>
+        </div>
+      </section>
+
+      {/* Calendar Booking Section */}
+      <section className="py-24 px-4 bg-gradient-to-b from-neutral-900/50 to-black">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block px-3 py-1 text-xs tag-style border border-muted-foreground/30 rounded-lg text-white opacity-100 mb-4">
+              Get a Quote
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Book Your <span className="text-gradient">Free Consultation</span>
+            </h2>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+              Schedule a 30-minute call to discuss your automation needs and see how we can help transform your business.
+            </p>
+          </div>
+          
+          <div className="cosmic-card rounded-3xl p-8 bg-gradient-to-br from-neutral-900/40 to-black/60 min-h-[600px]">
+            <CalEmbed />
+          </div>
         </div>
       </section>
 
