@@ -67,6 +67,11 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             outline: none;
+            resize: none;
+            min-height: 40px;
+            max-height: 100px;
+            font-family: inherit;
+            line-height: 1.4;
         }
         #chat-widget-send {
             background: #854fff;
@@ -112,7 +117,7 @@
             <p style="margin-bottom: 20px;"><strong>Hi 👋, how can we help?</strong></p>
         </div>
         <div id="chat-widget-footer">
-            <input type="text" id="chat-widget-input" placeholder="Type your message here...">
+            <textarea id="chat-widget-input" placeholder="Type your message here...&#10;Press Ctrl+Enter to send"></textarea>
             <button id="chat-widget-send">Send</button>
         </div>
     </div>
@@ -121,7 +126,7 @@
     <script>
         window.ChatWidgetConfig = {
             webhook: {
-                url: 'https://teal-meet-dory.ngrok-free.app/webhook/db41b269-f24f-4f8a-ae1a-3b182ba737c5/chat',
+                url: 'https://teal-meet-dory.ngrok-free.app/webhook/db41b269-f24f-4f8a-ae1a-3b182ba737c5/chat', 
                 route: 'general'
             },
             style: {
@@ -155,13 +160,14 @@
             document.getElementById("chat-widget-button").style.display = "flex";
         }
 
-        // Send message to n8n webhook
-        document.getElementById("chat-widget-send").addEventListener("click", function() {
+        // Function to send message
+        function sendMessage() {
             let message = document.getElementById("chat-widget-input").value;
             if (message.trim() === "") return;
 
             let chatBody = document.getElementById("chat-widget-body");
             let newMessage = document.createElement("p");
+            newMessage.style.whiteSpace = "pre-wrap"; // Preserve line breaks
             newMessage.textContent = message;
             newMessage.style.color = "#333";
             newMessage.style.background = "#f1f1f1";
@@ -190,6 +196,17 @@
             .catch(error => console.error("Error:", error));
 
             document.getElementById("chat-widget-input").value = "";
+        }
+
+        // Send message on button click
+        document.getElementById("chat-widget-send").addEventListener("click", sendMessage);
+
+        // Send message on Ctrl+Enter or Shift+Enter
+        document.getElementById("chat-widget-input").addEventListener("keydown", function(event) {
+            if ((event.ctrlKey || event.shiftKey) && event.key === "Enter") {
+                event.preventDefault();
+                sendMessage();
+            }
         });
     </script>
 
