@@ -1,26 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Maximize2, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Maximize2, Minimize2, RotateCcw } from 'lucide-react';
 import { chatWidgetConfig } from '@/config/chatWidget';
+import { BotAvatar } from '@/components/BotAvatar';
 
 interface Message {
   id: string;
   text: string;
   isBot: boolean;
   timestamp: Date;
-}
-
-interface ChatWidgetConfig {
-  webhook: {
-    url: string;
-    route: string;
-  };
-  style: {
-    primaryColor: string;
-    secondaryColor: string;
-    position: string;
-    backgroundColor: string;
-    fontColor: string;
-  };
 }
 
 // Helper function to format message text with proper line breaks and formatting
@@ -39,7 +26,7 @@ const formatMessage = (text: string) => {
     if (trimmedLine.match(/^[\-\*\•]\s+/)) {
       return (
         <div key={index} className="flex items-start gap-2 mb-1">
-          <span className="text-current mt-0.5 flex-shrink-0">•</span>
+          <span className="text-purple-300 mt-0.5 flex-shrink-0">•</span>
           <span className="flex-1">{formatInlineText(trimmedLine.replace(/^[\-\*\•]\s+/, ''))}</span>
         </div>
       );
@@ -51,7 +38,7 @@ const formatMessage = (text: string) => {
       if (match) {
         return (
           <div key={index} className="flex items-start gap-2 mb-1">
-            <span className="text-current mt-0.5 flex-shrink-0">{match[1]}.</span>
+            <span className="text-purple-300 mt-0.5 flex-shrink-0">{match[1]}.</span>
             <span className="flex-1">{formatInlineText(match[2])}</span>
           </div>
         );
@@ -87,7 +74,7 @@ const formatInlineText = (text: string) => {
     
     // Add bold text
     const boldText = remaining.slice(boldStart + 2, boldEnd);
-    parts.push(<strong key={`bold-${keyCounter++}`}>{boldText}</strong>);
+    parts.push(<strong key={`bold-${keyCounter++}`} className="text-white font-semibold">{boldText}</strong>);
     
     // Continue with remaining text
     remaining = remaining.slice(boldEnd + 2);
@@ -101,14 +88,14 @@ const formatInlineText = (text: string) => {
   return parts.length > 0 ? parts : text;
 };
 
-// This will be stored in a global context to persist across page navigation
 export const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showCallout, setShowCallout] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
-      text: 'Hi 👋, how can we help?\n\nI can assist you with:\n• Questions about our services\n• Scheduling consultations\n• General inquiries',
+      text: "Hi 👋, I'm Nova — your AI assistant!\n\nI can help you with:\n• Questions about our services\n• Scheduling consultations\n• General inquiries",
       isBot: true,
       timestamp: new Date()
     }
@@ -118,10 +105,8 @@ export const ChatWidget: React.FC = () => {
   const chatBodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Use configuration from external file
   const config = chatWidgetConfig;
 
-  // Generate or retrieve chat ID from session storage
   const getChatId = () => {
     let chatId = sessionStorage.getItem('chatId');
     if (!chatId) {
@@ -145,27 +130,32 @@ export const ChatWidget: React.FC = () => {
     }
   }, []);
 
-  // Save chat state to session storage whenever it changes
+  // Save chat state to session storage
   useEffect(() => {
-    const state = {
-      isOpen,
-      isExpanded,
-      messages
-    };
-    sessionStorage.setItem('chatWidgetState', JSON.stringify(state));
+    sessionStorage.setItem('chatWidgetState', JSON.stringify({ isOpen, isExpanded, messages }));
   }, [isOpen, isExpanded, messages]);
 
-  // Auto-focus input when chat opens or after sending a message
+  // Show callout bubble after 3s, once per session
+  useEffect(() => {
+    if (sessionStorage.getItem('novaCalloutSeen')) return;
+    const timer = setTimeout(() => setShowCallout(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const dismissCallout = () => {
+    setShowCallout(false);
+    sessionStorage.setItem('novaCalloutSeen', '1');
+  };
+
+  // Auto-focus input
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      const timeoutId = setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+      const timeoutId = setTimeout(() => inputRef.current?.focus(), 100);
       return () => clearTimeout(timeoutId);
     }
-  }, [isOpen, isLoading]); // Re-focus after isLoading changes (after sending)
+  }, [isOpen, isLoading]);
 
-  // Scroll to bottom when new messages are added
+  // Scroll to bottom
   useEffect(() => {
     if (chatBodyRef.current) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
@@ -193,7 +183,7 @@ export const ChatWidget: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          chatId: chatId,
+          chatId,
           message: messageText,
           route: config.webhook.route
         })
@@ -201,29 +191,23 @@ export const ChatWidget: React.FC = () => {
 
       const data = await response.json();
       
-      const botMessage: Message = {
+      setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         text: data.output || "Sorry, I couldn't understand that.",
         isBot: true,
         timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, botMessage]);
+      }]);
     } catch (error) {
       console.error('Error:', error);
-      const errorMessage: Message = {
+      setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         text: "Sorry, I'm having trouble connecting. Please try again later.",
         isBot: true,
         timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      }]);
     } finally {
       setIsLoading(false);
-      // Re-focus the input field after sending
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
   };
 
@@ -234,52 +218,127 @@ export const ChatWidget: React.FC = () => {
     }
   };
 
+  const resetChat = () => {
+    const newChatId = 'chat_' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('chatId', newChatId);
+    sessionStorage.removeItem('chatWidgetState');
+
+    setMessages([
+      {
+        id: 'welcome',
+        text: "Hi 👋, I'm Nova — your AI assistant!\n\nI can help you with:\n• Questions about our services\n• Scheduling consultations\n• General inquiries",
+        isBot: true,
+        timestamp: new Date()
+      }
+    ]);
+    setInputValue('');
+    setIsLoading(false);
+    setTimeout(() => inputRef.current?.focus(), 100);
+  };
+
   return (
     <>
-      {/* Chat Button */}
+      {/* ───── Floating Toggle Button + Callout ───── */}
       {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-5 right-5 w-14 h-14 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg z-[9999] flex items-center justify-center transition-all duration-300 hover:scale-110"
-          style={{ backgroundColor: config.style.primaryColor }}
-        >
-          <MessageCircle className="w-6 h-6" />
-        </button>
+        <div className="fixed bottom-5 right-5 z-[9999] flex flex-col items-end gap-3">
+
+          {/* Speech bubble callout */}
+          {showCallout && (
+            <div
+              className="relative flex items-center gap-2.5 px-4 py-3 rounded-2xl rounded-br-sm text-sm text-white border border-white/[0.08] bg-black/80 backdrop-blur-xl max-w-[200px]"
+              style={{
+                boxShadow: '0 0 18px rgba(147,51,234,0.25), 0 8px 32px rgba(0,0,0,0.4)',
+                animation: 'calloutIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards',
+              }}
+            >
+              {/* Gradient top line */}
+              <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-purple-500/60 to-transparent rounded-full" />
+
+              {/* Mini Nova orb */}
+              <BotAvatar size={26} className="flex-shrink-0" />
+
+              <div className="leading-snug">
+                <p className="font-semibold text-white text-[13px]">Talk to Nova</p>
+                <p className="text-gray-400 text-[11px] mt-0.5">Ask me anything ✨</p>
+              </div>
+
+              {/* Dismiss X */}
+              <button
+                onClick={(e) => { e.stopPropagation(); dismissCallout(); }}
+                className="ml-1 flex-shrink-0 text-gray-500 hover:text-gray-300 transition-colors"
+                title="Dismiss"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+
+              {/* Tail arrow pointing down-right toward button */}
+              <div
+                className="absolute -bottom-[7px] right-5 w-3.5 h-3.5 bg-black/80 border-r border-b border-white/[0.08] rotate-45"
+                style={{ backdropFilter: 'blur(12px)' }}
+              />
+            </div>
+          )}
+
+          {/* Toggle button */}
+          <button
+            onClick={() => { setIsOpen(true); dismissCallout(); }}
+            className="group w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 bg-gradient-to-br from-purple-600 to-purple-700 text-white shadow-[0_0_20px_rgba(147,51,234,0.4),0_0_60px_rgba(147,51,234,0.15)]"
+          >
+            <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
+            {/* Ping indicator */}
+            <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-cyan-400 rounded-full border-2 border-black animate-pulse" />
+          </button>
+        </div>
       )}
 
-      {/* Chat Widget */}
+      {/* ───── Chat Widget ───── */}
       {isOpen && (
-        <div 
-          className={`fixed bottom-5 right-5 bg-gray-900 rounded-xl shadow-2xl z-[9999] flex flex-col overflow-hidden animate-slide-in-bottom border border-gray-700 transition-all duration-300 ${
-            isExpanded 
-              ? 'w-[500px] h-[700px]' 
-              : 'w-[350px] h-[500px]'
+        <div
+          className={`fixed bottom-5 right-5 z-[9999] flex flex-col overflow-hidden transition-all duration-300 ease-out rounded-2xl border border-white/[0.08] bg-black/80 backdrop-blur-2xl ${
+            isExpanded
+              ? 'w-[500px] h-[700px]'
+              : 'w-[370px] h-[520px]'
           }`}
+          style={{
+            boxShadow: '0 0 15px rgba(147, 51, 234, 0.2), 0 0 50px rgba(147, 51, 234, 0.08), 0 25px 60px rgba(0, 0, 0, 0.5)',
+            animation: 'chatSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+          }}
         >
-          {/* Header */}
-          <div 
-            className="bg-purple-600 text-white p-4 flex justify-between items-center"
-            style={{ backgroundColor: config.style.primaryColor }}
-          >
+          {/* ───── Header ───── */}
+          <div className="relative px-4 py-3 flex justify-between items-center border-b border-white/[0.08] bg-white/[0.03]">
+            {/* Subtle gradient line at top */}
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
+
             <div className="flex items-center gap-3">
-              <img 
-                src={`${import.meta.env.BASE_URL}bot.gif`} 
-                alt="BTC Bot" 
-                className="w-14 h-14 object-contain"
-              />
-              <span className="font-bold text-lg">BTC Bot</span>
+              <div className="relative">
+                <BotAvatar size={36} />
+                {/* Online dot */}
+                <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-black z-20" />
+              </div>
+              <div>
+                <span className="font-semibold text-white text-sm leading-tight block">Nova</span>
+                <span className="text-[11px] text-emerald-400/80 leading-tight">Online</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
+
+            <div className="flex items-center gap-1">
+              <button
+                onClick={resetChat}
+                className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
+                title="Reset chat"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-6 h-6 flex items-center justify-center rounded hover:bg-white/20 transition-colors"
-                title={isExpanded ? "Make smaller" : "Make larger"}
+                className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
+                title={isExpanded ? 'Make smaller' : 'Make larger'}
               >
-                {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                {isExpanded ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="w-6 h-6 flex items-center justify-center rounded hover:bg-white/20 transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
                 title="Close chat"
               >
                 <X className="w-4 h-4" />
@@ -287,74 +346,97 @@ export const ChatWidget: React.FC = () => {
             </div>
           </div>
 
-          {/* Chat Body */}
-          <div 
+          {/* ───── Chat Body ───── */}
+          <div
             ref={chatBodyRef}
-            className="flex-1 p-5 overflow-y-auto bg-gray-800"
+            className="flex-1 px-4 py-4 overflow-y-auto space-y-3 scroll-smooth"
+            style={{
+              background: 'linear-gradient(180deg, rgba(147,51,234,0.03) 0%, transparent 30%)',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgba(147,51,234,0.2) transparent'
+            }}
           >
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`mb-4 ${message.isBot ? '' : 'text-right'}`}
+                className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
               >
                 <div
-                  className={`inline-block max-w-[80%] p-3 rounded-lg ${
+                  className={`max-w-[82%] px-3.5 py-2.5 text-[13px] leading-relaxed ${
                     message.isBot
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-700 text-white'
+                      ? 'bg-white/[0.06] border border-white/[0.08] rounded-2xl rounded-bl-md text-gray-200'
+                      : 'bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl rounded-br-md text-white shadow-[0_2px_15px_rgba(147,51,234,0.25)]'
                   }`}
-                  style={message.isBot ? { backgroundColor: config.style.primaryColor } : {}}
                 >
-                  <div className="whitespace-pre-wrap">
+                  <div className={`whitespace-pre-wrap ${!message.isBot ? 'text-left' : ''}`}>
                     {formatMessage(message.text)}
+                  </div>
+                  <div className={`text-[10px] mt-1.5 ${message.isBot ? 'text-gray-500' : 'text-purple-200/60'}`}>
+                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
               </div>
             ))}
+
+            {/* Typing indicator */}
             {isLoading && (
-              <div className="mb-4">
-                <div 
-                  className="inline-block bg-purple-600 text-white p-3 rounded-lg"
-                  style={{ backgroundColor: config.style.primaryColor }}
-                >
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                    <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                    <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              <div className="flex justify-start">
+                <div className="bg-white/[0.06] border border-white/[0.08] rounded-2xl rounded-bl-md px-4 py-3">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '0.6s' }} />
+                    <div className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '0.6s' }} />
+                    <div className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '0.6s' }} />
                   </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Footer */}
-          <div className="p-3 border-t border-gray-700 bg-gray-900">
-            <div className="flex gap-2">
+          {/* ───── Footer / Input ───── */}
+          <div className="px-3 py-3 border-t border-white/[0.08] bg-white/[0.02]">
+            <div className="flex items-center gap-2">
               <input
                 ref={inputRef}
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Type your message here..."
-                className="flex-1 px-3 py-2 border border-gray-600 bg-gray-800 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-purple-600"
+                placeholder="Type a message..."
+                className="flex-1 px-3.5 py-2.5 text-sm text-white placeholder-gray-500 bg-white/[0.05] border border-white/[0.08] rounded-xl focus:outline-none focus:border-purple-500/40 focus:ring-1 focus:ring-purple-500/20 transition-all duration-200"
                 disabled={isLoading}
                 autoFocus
               />
               <button
                 onClick={handleSendMessage}
                 disabled={isLoading || inputValue.trim() === ''}
-                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                style={{ backgroundColor: config.style.primaryColor }}
-                onMouseDown={(e) => e.preventDefault()} // Prevent stealing focus from input
+                className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 text-white transition-all duration-200 hover:shadow-[0_0_20px_rgba(147,51,234,0.4)] hover:scale-105 disabled:opacity-30 disabled:hover:shadow-none disabled:hover:scale-100 disabled:cursor-not-allowed"
+                onMouseDown={(e) => e.preventDefault()}
                 title="Send message"
               >
                 <Send className="w-4 h-4" />
               </button>
             </div>
+            {/* Powered-by footer */}
+            <div className="mt-2 text-center">
+              <span className="text-[10px] text-gray-600">
+                Powered by <span className="text-purple-400/60 font-medium">BehindTheClick</span>
+              </span>
+            </div>
           </div>
         </div>
       )}
+
+      {/* ───── Inline keyframes for chat open animation ───── */}
+      <style>{`
+        @keyframes chatSlideIn {
+          from { opacity: 0; transform: translateY(16px) scale(0.96); }
+          to   { opacity: 1; transform: translateY(0)    scale(1);    }
+        }
+        @keyframes calloutIn {
+          from { opacity: 0; transform: translateY(10px) scale(0.95); }
+          to   { opacity: 1; transform: translateY(0)    scale(1);    }
+        }
+      `}</style>
     </>
   );
-}; 
+};
